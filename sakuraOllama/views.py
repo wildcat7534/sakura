@@ -1,6 +1,7 @@
-from django.http import HttpResponse, HttpResponseRedirect, httpRequest
+from django.http import HttpResponse, HttpResponseRedirect, HttpRequest
 from django.shortcuts import render, get_object_or_404
 from django.template import loader
+import json
 
 from django.shortcuts import render
 from django.views import generic
@@ -8,11 +9,16 @@ from django.views import generic
 
 def sakura(request):
   title = 'Sakura'
-  chatStream = ""
-  sakuraHtml = loader.get_template('sakuraOllama/sakura.html')
+  chatBody = "attente"
 
   if request.method == 'POST':
     # Do something
-    chatStream = request.POST['chatStream']
-    return HttpResponse(chatStream)
-  return render(request, 'sakuraOllama/sakura.html', {'page_title': title, 'chatStream': chatStream})
+    print("POST request", request.POST)
+       
+    chatBody = request.POST.get('text')
+        
+    print("chatBody: ", chatBody)
+    return render(request, 'sakuraOllama/sakura.html', {'page_title': title, 'chatStream': chatBody})
+    # message = json.loads(chatBody)['message']
+    # chatStream = request.POST['chatStream']
+    # chatStream2 = request.parse_body()

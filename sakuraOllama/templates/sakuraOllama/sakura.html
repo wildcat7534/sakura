@@ -15,14 +15,13 @@
   </header>
   <main>
     <div id="chatStream">
-      {{chatStream|safe}}
+      {{chatStream}}
     </div>
     <div id="userInputChat">
       <form method="POST" action="/">
         {% csrf_token %}
-        <input id="userInput" placeholder="Votre message">
+        <input id="userInput" placeholder="Votre message" type="text">
         <input type="submit" value="send" id="sendButton">
-
       </form>
     </div>
   </main>
