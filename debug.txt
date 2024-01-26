@@ -1,0 +1,69 @@
+== Info: processing: http://localhost:11434/api/generate
+== Info:   Trying [::1]:11434...
+== Info: connect to ::1 port 11434 failed: Connection refused
+== Info:   Trying 127.0.0.1:11434...
+== Info: Connected to localhost (127.0.0.1) port 11434
+=> Send header, 160 bytes (0xa0)
+0000: POST /api/generate HTTP/1.1
+001d: Host: localhost:11434
+0034: User-Agent: curl/8.2.1
+004c: Accept: */*
+0059: Content-Length: 52
+006d: Content-Type: application/x-www-form-urlencoded
+009e: 
+=> Send data, 52 bytes (0x34)
+0000: {"model": "sakura", "prompt":"Why is the sky blue?"}
+<= Recv header, 17 bytes (0x11)
+0000: HTTP/1.1 200 OK
+<= Recv header, 36 bytes (0x24)
+0000: Content-Type: application/x-ndjson
+<= Recv header, 37 bytes (0x25)
+0000: Date: Fri, 26 Jan 2024 10:40:37 GMT
+<= Recv header, 28 bytes (0x1c)
+0000: Transfer-Encoding: chunked
+<= Recv header, 2 bytes (0x2)
+0000: 
+<= Recv data, 102 bytes (0x66)
+0000: 60
+0004: {"model":"sakura","created_at":"2024-01-26T10:40:37.668277772Z",
+0044: "response":" The","done":false}.
+<= Recv data, 104 bytes (0x68)
+0000: 62
+0004: {"model":"sakura","created_at":"2024-01-26T10:40:38.982743966Z",
+0044: "response":" color","done":false}.
+<= Recv data, 101 bytes (0x65)
+0000: 5f
+0004: {"model":"sakura","created_at":"2024-01-26T10:40:39.536145829Z",
+0044: "response":" of","done":false}.
+<= Recv data, 102 bytes (0x66)
+0000: 60
+0004: {"model":"sakura","created_at":"2024-01-26T10:40:40.077759208Z",
+0044: "response":" the","done":false}.
+<= Recv data, 102 bytes (0x66)
+0000: 60
+0004: {"model":"sakura","created_at":"2024-01-26T10:40:40.609255462Z",
+0044: "response":" sky","done":false}.
+<= Recv data, 108 bytes (0x6c)
+0000: 66
+0004: {"model":"sakura","created_at":"2024-01-26T10:40:41.214426903Z",
+0044: "response":" appearing","done":false}.
+<= Recv data, 103 bytes (0x67)
+0000: 61
+0004: {"model":"sakura","created_at":"2024-01-26T10:40:41.797970421Z",
+0044: "response":" blue","done":false}.
+<= Recv data, 101 bytes (0x65)
+0000: 5f
+0004: {"model":"sakura","created_at":"2024-01-26T10:40:42.338449549Z",
+0044: "response":" to","done":false}.
+<= Recv data, 102 bytes (0x66)
+0000: 60
+0004: {"model":"sakura","created_at":"2024-01-26T10:40:42.891101865Z",
+0044: "response":" our","done":false}.
+<= Recv data, 103 bytes (0x67)
+0000: 61
+0004: {"model":"sakura","created_at":"2024-01-26T10:40:43.431236392Z",
+0044: "response":" eyes","done":false}.
+<= Recv data, 101 bytes (0x65)
+0000: 5f
+0004: {"model":"sakura","created_at":"2024-01-26T10:40:43.970903345Z",
+0044: "response":" is","done":false}.

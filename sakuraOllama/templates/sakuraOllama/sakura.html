@@ -20,7 +20,7 @@
     <div id="userInputChat">
       <form method="POST" action="/">
         {% csrf_token %}
-        <input id="userInput" placeholder="Votre message" type="text">
+        <input id="userInput" type="text" name="question">
         <input type="submit" value="send" id="sendButton">
       </form>
     </div>
