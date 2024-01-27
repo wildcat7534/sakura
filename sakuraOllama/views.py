@@ -16,6 +16,10 @@ def sakura(request):
 
   if request.method == 'POST':
 
+    chatBody = request.POST.get('question')
+    
+    print("chatBody: ", chatBody)
+    
     response = ollama.chat(
       model='sakura', 
       messages=[
