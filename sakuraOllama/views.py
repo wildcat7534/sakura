@@ -15,33 +15,19 @@ def sakura(request):
   chatBody = "attente"
 
   if request.method == 'POST':
-       
-    # chatBody = request.POST.get('question')
-        
-    # print("chatBody: ", chatBody)
 
-    # data = {'model': 'sakura', 'prompt': 'why the sky is blue'}
-
-    # ollama_response = requests.post('http://localhost:11434/api/chat', data=data )
-    # print(ollama_response)
-
-
-
-    response = ollama.chat(model='sakura', messages=[
-      {
-       'role': 'user',
-       'content': chatBody,
-     },
-     ])
+    response = ollama.chat(
+      model='sakura', 
+      messages=[
+        {
+          'role': 'user',
+          'content': chatBody,
+        },
+      ])
     chatBody = response['message']['content']
 
-    print(ollama_response)
-
+    print(chatBody)
 
   return render(request, 'sakuraOllama/sakura.html', {'page_title': title, 'chatStream': chatBody})
 
 
-
-    # message = json.loads(chatBody)['message']
-    # chatStream = request.POST['chatStream']
-    # chatStream2 = request.parse_body()
