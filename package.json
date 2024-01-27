@@ -3,6 +3,6 @@
     "dependencies": "^0.0.1",
     "ollama": "^0.4.1",
     "requests": "^2.31.0",
-    "Django": "==5.0.1"
+    "django": "==5.0.1"
   }
 }
