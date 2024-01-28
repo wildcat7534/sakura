@@ -1,12 +1,25 @@
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh;
+}
+
 #chatStream {
   border: 2px solid #000;
   border-radius: 10px;
   background-color: #e3acac;
-  padding: 10px;
+  padding: 30px;
   margin: 10px;
-  height: 300px;
-  width: 300px;
-  overflow: scroll;
+  height: 50vh;
+  width: 80%;
+  overflow: auto;
+  overscroll-behavior-y: contain;
+  text-align: center;
+  color: darkmagenta;
+  text-wrap: pretty;
+  line-height: 22px;
 }
 
 #userInputChat {
@@ -14,7 +27,23 @@
   border-radius: 10px;
   background-color: #e3acac;
   padding: 10px;
-  margin: 10px;
   height: 50px;
-  width: 300px;
+  width: 70vw;
+  display: flex;
+  justify-content: center;
+}
+
+#formUserSendQuestionToAI {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+#userInput {
+  width: 70%;
+  height: 60%;
+  border: cyan 3px ridge;
+  background-color: #bbd2d5;
+  font-size: 1rem;
 }
