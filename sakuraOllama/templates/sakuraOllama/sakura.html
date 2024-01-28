@@ -14,9 +14,9 @@
     <h1>{{page_title}}</h1>
   </header>
   <main>
-    <div id="chatStream">
+    <p id="chatStream">
       {{chatStream}}
-    </div>
+    </p>
     <div id="userInputChat">
       <form id="formUserSendQuestionToAI" method="POST" action="/">
         {% csrf_token %}
