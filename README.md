@@ -9,3 +9,5 @@ My first AI with Ollama, Django
 - [x] Install django (cf doc and tuto)
 - [x] Install ollama javascript library npm i ollama
 - [x] Install ollama : curl https://ollama.ai/install.sh | sh
+- [x] plutot que npm, création d'un fichier requierements.txt pour pip install -r requierements.txt
+- [x] (ollama requests django)
