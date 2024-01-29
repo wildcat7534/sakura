@@ -14,7 +14,7 @@ def sakura(request):
 
   title = 'Sakura'
 
-  chatUser = "attente de la question"
+  chatUser = "comment on dit bonjour en Japonais ?"
   chatStream = [{'role': 'user', 'content': chatUser}, { 'role' : 'assistant', 'content': 'attente de Sakura : '} ]
   if request.method == 'POST':
     chatUser = request.POST.get('question')
@@ -25,14 +25,39 @@ def sakura(request):
 
   print("chatUser: ", chatUser)
 
+  responses = []
   for chunk in ollama.chat('sakura', messages=chatHistory, stream=True):
     message = chunk['message']['content']
     print(message, end='', flush=True)
     #print(chunk['message']['content'], end='', flush=True)
     chatStream[1]['content'] += message
+    responses.append(message)
+    
+  print("responses brut : ", responses)
+  responsePhrases = []
+  phrase = ""
+  for response in responses:
+    if response != "\n":
+      phrase += response
+    else:
+      responsePhrases.append(phrase)
+      phrase = ""
+    
 
-  return render(request, 'sakuraOllama/sakura.html', {'page_title': title, 'chatStream': chatStream[1]['content']})
+  print("response phrases : ",phrase)
+
+  return render(request, 'sakuraOllama/sakura.html', {'page_title': title, 'chatStream': responsePhrases})
+
+
+
+
+
+
+
+
+
   # completion
+
   # response = ollama.chat(
   #   model='sakura', 
   #   messages=[

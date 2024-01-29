@@ -1,4 +1,4 @@
-ollama^0.4.1
-requests^2.31.0
+ollama
+requests==2.31.0
 django==5.0.1
-markdown^3.5.2
+markdown==3.5.2

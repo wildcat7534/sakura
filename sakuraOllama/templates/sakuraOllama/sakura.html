@@ -14,9 +14,13 @@
     <h1>{{page_title}}</h1>
   </header>
   <main>
-    <p id="chatStream">
-      {{chatStream}}
-    </p>
+    <div id="chatBot">
+      {% for message in chatStream %}
+      <p class="chatStream">
+        {{message}}
+      </p>
+      {% endfor %}
+    </div>
     <div id="userInputChat">
       <form id="formUserSendQuestionToAI" method="POST" action="/">
         {% csrf_token %}
