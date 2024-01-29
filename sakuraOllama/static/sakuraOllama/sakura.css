@@ -17,7 +17,13 @@ main {
   border: pink 3px ridge;
 }
 
-#chatStream {
+#userQuestion {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: darkmagenta;
+}
+
+.chatStream {
   border-radius: 10px;
   margin: 5px;
   width: 80%;

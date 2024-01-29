@@ -16,6 +16,7 @@ def sakura(request):
 
   chatUser = "comment on dit bonjour en Japonais ?"
   chatStream = [{'role': 'user', 'content': chatUser}, { 'role' : 'assistant', 'content': 'attente de Sakura : '} ]
+
   if request.method == 'POST':
     chatUser = request.POST.get('question')
   #make a dictionnary variable to store the chat history
@@ -36,21 +37,36 @@ def sakura(request):
   print("responses brut : ", responses)
   responsePhrases = []
   phrase = ""
+  code = ""
+  responseCode = []
+
   for response in responses:
-    if response != "\n":
+    if response != "\n" or response != "```":
       phrase += response
+    elif response == "```":
+      responseCode += recupCode()
+      print("elif")
     else:
       responsePhrases.append(phrase)
+      
+      print("else")
       phrase = ""
     
 
   print("response phrases : ",phrase)
 
-  return render(request, 'sakuraOllama/sakura.html', {'page_title': title, 'chatStream': responsePhrases})
+  return render(request, 'sakuraOllama/sakura.html', {'page_title': title, 'userQuestion' : chatUser, 'chatStream': responsePhrases})
 
 
-
-
+def recupCode(reponse):
+  code = ""
+  for response in responses:
+    code += response
+    if response == "```":
+      responseCodeWorking.append(code)
+      print("code : ", code)
+      code = ""
+  return responseCodeWorking
 
 
 
