@@ -10,52 +10,56 @@ import requests
 import ollama
 import markdown
 
+
+
 def sakura(request):
-
-  title = 'Sakura'
-
+  
+  title = 'Répondu !'
   chatUser = "comment on dit bonjour en Japonais ?"
-  chatStream = [{'role': 'user', 'content': chatUser}, { 'role' : 'assistant', 'content': 'attente de Sakura : '} ]
-
   if request.method == 'POST':
+  
     chatUser = request.POST.get('question')
-  #make a dictionnary variable to store the chat history
-  chatHistory = [{'role': 'user', 'content': chatUser}, { 'role' : 'assistant', 'content': 'attente de Sakura : ' }]
-  #chatHistory.append({'role': 'user', 'content': chatUser})
-  #chatHistory.append({ 'role' : 'assistant', 'content': chatStream })
+    #make a dictionnary variable to store the chat history
+    chatHistory = [{'role': 'user', 'content': chatUser}, { 'role' : 'assistant', 'content': 'attente de Sakura : ' }]
 
-  print("chatUser: ", chatUser)
+    print("chatUser: ", chatUser)
 
-  responses = []
-  for chunk in ollama.chat('sakura', messages=chatHistory, stream=True):
-    message = chunk['message']['content']
-    print(message, end='', flush=True)
-    #print(chunk['message']['content'], end='', flush=True)
-    chatStream[1]['content'] += message
-    responses.append(message)
-    
-  print("responses brut : ", responses)
-  responsePhrases = []
-  phrase = ""
-  code = ""
-  responseCode = []
-
-  for response in responses:
-    if response != "\n" or response != "```":
-      phrase += response
-    elif response == "```":
-      responseCode += recupCode()
-      print("elif")
-    else:
-      responsePhrases.append(phrase)
+    responses = []
+    for chunk in ollama.chat('sakura', messages=chatHistory, stream=True):
+      message = chunk['message']['content']
+      print(message, end='', flush=True)
+      responses.append(message)
       
-      print("else")
-      phrase = ""
+    print("responses brut : ", responses)
+
+    responsePhrases = []
+    phrase = ""
+    code = ""
+    responseCode = ["print('Hello world !')"]
+
+    for response in responses:
+      if response != "\n":
+        phrase += response
+      else:
+        responsePhrases.append(phrase)
+        print("Phrase ajouté à responsePhrases : ", phrase)
+        phrase = ""
+      
+    for response in responses:
+      if response.startswith("``"):
+        code += response
+        responseCode.append(code)
+        if response.startswith("`"):
+          code += response
+          responseCode.append(code)
+          print("code ajouté à responseCode : ", code)
+      
+    print("chunk de phrase : ",phrase)
+    print("response code : ",code)
+    print("responsePhrases : ",responsePhrases)
+
     
-
-  print("response phrases : ",phrase)
-
-  return render(request, 'sakuraOllama/sakura.html', {'page_title': title, 'userQuestion' : chatUser, 'chatStream': responsePhrases})
+  return render(request, 'sakuraOllama/sakura.html', {'page_title': title, 'userQuestion' : chatUser, 'chatStream': responsePhrases, 'codes' : responseCode})
 
 
 def recupCode(reponse):

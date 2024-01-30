@@ -16,12 +16,22 @@
   <main>
     <div id="chatBot">
       <h3>{{userQuestion}}</h3>
-      {% for message in chatStream %}
+      <div id="chatStreamContainer">
+        {% for message in chatStream %}
 
-      <p class="chatStream">
-        {{message}}
-      </p>
-      {% endfor %}
+        <p class="chatStream">
+          {{message}}
+        </p>
+        {% endfor %}
+      </div>
+      <div id="chatBotCode">
+
+        {% for code in codes %}
+        <p class="chatStreamCode">
+          {{code}}
+        </p>
+        {% endfor %}
+      </div>
     </div>
     <div id="userInputChat">
       <form id="formUserSendQuestionToAI" method="POST" action="/">

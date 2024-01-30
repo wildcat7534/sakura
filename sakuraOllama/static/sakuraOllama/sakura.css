@@ -15,12 +15,26 @@ main {
   overscroll-behavior-y: contain;
   background-color: #e3acac;
   border: pink 3px ridge;
+  height: 75vh;
 }
 
 #userQuestion {
   font-size: 1.2rem;
   font-weight: bold;
   color: darkmagenta;
+}
+
+#chatStreamContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 80%;
+  height: 50vh;
+  overscroll-behavior-y: contain;
+  background-color: #d5b5b5;
+  border: #9c7e7e 3px ridge;
+  height: 75vh;
 }
 
 .chatStream {
@@ -32,6 +46,17 @@ main {
   color: darkmagenta;
   text-wrap: pretty;
   line-height: 22px;
+  height: fit-content;
+  width: 90%;
+}
+
+#chatBotCode {
+  background-color: teal;
+  color: khaki;
+  font-size: 1.1em;
+  border: aliceblue 2px ridge;
+  width: 80%;
+  text-align: center;
 }
 
 #userInputChat {
