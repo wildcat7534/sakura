@@ -18,16 +18,15 @@
       <h3>{{userQuestion}}</h3>
       <div id="chatStreamContainer">
         {% for message in chatStream %}
-
-          <p class="chatStream">
-            {{message}}
-          </p>
-          
+        <p class="chatStream">
+          {{message}}
+        </p>
         {% endfor %}
       </div>
+
     </div>
     <div id="userInputChat">
-      <form id="formUserSendQuestionToAI" method="POST" action="/">
+      <form id="formUserSendQuestionToAI" method="POST" action="/sakuraasync">
         {% csrf_token %}
         <input id="userInput" type="text" name="question">
         <input type="submit" value="send" id="sendButton">

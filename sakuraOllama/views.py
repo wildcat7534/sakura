@@ -7,7 +7,10 @@ from django.shortcuts import render
 from django.views import generic
 
 import requests
+import asyncio
 import ollama
+from ollama import AsyncClient
+from asgiref.sync import async_to_sync
 import markdown
 #for vLLM
 from vllm import LLM, SamplingParams
@@ -17,31 +20,30 @@ import transformers
 import torch
 
 title = 'Répondu !'
-
+phrases = []
 
 def sakura(request):
-  
-  chatUser = "comment on dit bonjour en Japonais ?"
+  responsePhrases = []
+  chatUser = "Comment on dit bonjour en Japonais ?"
+
   if request.method == 'POST':
   
     chatUser = request.POST.get('question')
-    #make a dictionnary variable to store the chat history
-    chatHistory = [{'role': 'user', 'content': chatUser}, { 'role' : 'assistant', 'content': 'attente de Sakura : ' }]
+
+    chatHistory = [{'role': 'user', 'content': chatUser}]
 
     print("chatUser: ", chatUser)
 
     responses = []
     for chunk in ollama.chat('sakura', messages=chatHistory, stream=True):
       message = chunk['message']['content']
-      print(message, end='', flush=True)
+      print( message, end='', flush=True)
       responses.append(message)
       
     print("responses brut : ", responses)
 
     responsePhrases = []
     phrase = ""
-    code = ""
-    responseCode = ["print('Hello world !')"]
 
     for response in responses:
       if response != "\n":
@@ -51,22 +53,46 @@ def sakura(request):
         print("Phrase ajouté à responsePhrases : ", phrase)
         phrase = ""
       
-    for response in responses:
-      if response.startswith("``"):
-        code += response
-        responseCode.append(code)
-        if response.startswith("`"):
-          code += response
-          responseCode.append(code)
-          print("code ajouté à responseCode : ", code)
-      
     print("chunk de phrase : ",phrase)
-    print("response code : ",code)
     print("responsePhrases : ",responsePhrases)
 
     
-  return render(request, 'sakuraOllama/sakura.html', {'page_title': title, 'userQuestion' : chatUser, 'chatStream': responsePhrases, 'codes' : responseCode})
+    return render(request, 'sakuraOllama/sakura.html', {'page_title': title, 'userQuestion' : chatUser, 'chatStream': responsePhrases} )
+  return render(request, 'sakuraOllama/sakura.html', {'page_title': title, 'userQuestion' : chatUser, 'chatStream': responsePhrases} )
 
+def sakuraAsync(request):
+  chatUser = "Comment on dit bonjour en Japonais ?"
+  generated_text = ""
+
+
+  if request.method == 'POST':
+     
+    conversation = [{'role': 'user', 'content': chatUser }, {'role': 'assistant', 'content': 'start'}]
+   
+    async def chat(conversation):
+      generated_text_buff = []
+
+      #messages = [message['content'] for message in conversation if isinstance(message['content'], str) and message['content']]
+
+      async for part in await AsyncClient().chat(model='sakura', messages=conversation, stream=True):
+
+        generated_text_buff += (part['message']['content'])
+        phrase = ''.join(generated_text_buff)
+        print(part['message']['content'], end='', flush=True)
+      
+      conversation.append({'role': 'assistant', 'content': phrase})
+      return phrase
+    
+    chatUser = request.POST.get('question')
+    conversation.append({'role': 'user', 'content': chatUser})
+    print("**conversation : ", conversation)
+
+    phrase = async_to_sync(chat)(conversation)
+
+    phrases.append(phrase)
+
+    return render(request, 'sakuraOllama/sakuraasync.html', {'page_title': title, 'userQuestion' : chatUser, 'chatStream': phrases})
+  return render(request, 'sakuraOllama/sakuraasync.html', {'page_title': title, 'userQuestion' : chatUser, 'chatStream': generated_text})
 
 def sakuraVllm(request):
   chatUser = "Comment on dit bonjour en Japonais ?"
@@ -105,7 +131,7 @@ def sakuraTransormers(request):
     from transformers import AutoTokenizer
 
 
-  model = "mistralai/Mixtral-8x7B-Instruct-v0.1"
+  model = "mistralai/Mistral-7B-v0.1"
 
   tokenizer = AutoTokenizer.from_pretrained(model)
 
@@ -121,3 +147,5 @@ def sakuraTransormers(request):
   from transformers import TextStreamer
   streamer = TextStreamer(tokenizer, skip_prompt=True)
   outputs = pipeline(prompt, streamer=streamer, max_new_tokens=256, do_sample=True, temperature=0.7, top_k=50, top_p=0.95)
+
+

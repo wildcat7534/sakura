@@ -7,4 +7,5 @@ urlpatterns = [
   path('', views.sakura, name='sakura'),
   path('sakuravllm', views.sakuraVllm, name='sakuravllm'),
   path('sakuraTransormers', views.sakuraTransormers, name='sakuraTransormers'),
+  path('sakuraasync', views.sakuraAsync, name='sakuraasync'),
 ]
