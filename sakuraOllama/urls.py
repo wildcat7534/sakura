@@ -5,5 +5,6 @@ app_name = 'sakuraOllama'
 
 urlpatterns = [
   path('', views.sakura, name='sakura'),
-  # Add more paths here
+  path('sakuravllm', views.sakuraVllm, name='sakuravllm'),
+  path('sakuraTransormers', views.sakuraTransormers, name='sakuraTransormers'),
 ]

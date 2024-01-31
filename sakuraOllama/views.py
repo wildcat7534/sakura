@@ -9,12 +9,18 @@ from django.views import generic
 import requests
 import ollama
 import markdown
+#for vLLM
+from vllm import LLM, SamplingParams
+#for Transformers
+from transformers import AutoTokenizer, AutoModelForCausalLM
+import transformers
+import torch
 
+title = 'Répondu !'
 
 
 def sakura(request):
   
-  title = 'Répondu !'
   chatUser = "comment on dit bonjour en Japonais ?"
   if request.method == 'POST':
   
@@ -62,61 +68,55 @@ def sakura(request):
   return render(request, 'sakuraOllama/sakura.html', {'page_title': title, 'userQuestion' : chatUser, 'chatStream': responsePhrases, 'codes' : responseCode})
 
 
-def recupCode(reponse):
-  code = ""
-  for response in responses:
-    code += response
-    if response == "```":
-      responseCodeWorking.append(code)
-      print("code : ", code)
-      code = ""
-  return responseCodeWorking
+def sakuraVllm(request):
+  chatUser = "Comment on dit bonjour en Japonais ?"
+  generated_text = ""
+  if request.method == 'POST':
 
+    chatUser = request.POST.get('question')
 
+    prompts = [
+      chatUser,
+    ]
+    sampling_params = SamplingParams(temperature=0.8, top_p=0.95)
+    #llm = LLM(model="sakura")
+    #llm = LLM(model="mistralai/Mistral-7B-v0.1")
+    llm = AutoModelForCausalLM.from_pretrained("")
 
+    outputs = llm.generate(prompts, sampling_params)
 
-
-  # completion
-
-  # response = ollama.chat(
-  #   model='sakura', 
-  #   messages=[
-  #     {
-  #       'role': 'user',
-  #       'content': chatUser,
-  #     },
-  #   ])
-  # chatUser = response['message']['content']
-  # #chatUser = markdown.markdown(chatUser)
-  # #chatUser = process_gpt_output(chatUser)
-
-  # print(chatUser)
-
-  # chat streaming
-
-
-  #return render(request, 'sakuraOllama/sakura.html', {'page_title': title, 'chatStream': chatUser})
-
-
-def process_gpt_output(gpt_output):
-    lines = gpt_output.split("\n")
+    # print the outputs
+    for output in outputs:
+      prompt = output.prompt
+      generated_text = output.output[0].text
+      affiche = generated_text.join(prompt)
+      print(f"Prompt: {prompt!r}, Generated text: {generated_text!r}")
     
-    # Check if it's a numbered list
-    if all(line.strip().startswith(("1.", "2.", "3.", "4.", "5.")) for line in lines if line.strip()):
-        list_items = []
-        for line in lines:
-            line = line.strip()
-            if line:
-                # Extract the item after the number
-                _, item = line.split(".", 1)
-                list_items.append(f"<li>{item.strip()}</li>")
-        if list_items:
-            return "<ol>" + "\n".join(list_items) + "</ol>"
+    return render(request, 'sakuraOllama/sakuravllm.html', {'page_title': title, 'userQuestion' : chatUser, 'chatStream': affiche})
+  return render(request, 'sakuraOllama/sakuravllm.html', {'page_title': title, 'userQuestion' : chatUser, 'chatStream': generated_text})
 
-    # If the output contains multiple lines:
-    elif "\n" in gpt_output:
-        paragraphs = gpt_output.split("\n")
-        return "".join(f"<p>{para.strip()}</p>" for para in paragraphs if para.strip())
+def sakuraTransormers(request):
+  chatUser = "Comment on dit bonjour en Japonais ?"
+  generated_text = ""
+  if request.method == 'POST':
 
-    # Return the output as is if none of the above conditions are met
-    return gpt_output
+    chatUser = request.POST.get('question')
+
+    from transformers import AutoTokenizer
+
+
+  model = "mistralai/Mixtral-8x7B-Instruct-v0.1"
+  tokenizer = AutoTokenizer.from_pretrained(model)
+
+  pipeline = transformers.pipeline(
+    "text-generation",
+    model=model,
+    model_kwargs={"torch_dtype": torch.float16, "load_in_4bit": True},
+  )
+
+  messages = [{"role": "user", "content": "Explain what a Mixture of Experts is in less than 100 words."}]
+  prompt = pipeline.tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+
+  from transformers import TextStreamer
+  streamer = TextStreamer(tokenizer, skip_prompt=True)
+  outputs = pipeline(prompt, streamer=streamer, max_new_tokens=256, do_sample=True, temperature=0.7, top_k=50, top_p=0.95)

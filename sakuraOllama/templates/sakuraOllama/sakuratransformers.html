@@ -1,0 +1,50 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Sakura Ollama</title>
+  <link rel="stylesheet" href="{% static 'sakuraOllama/sakura.css' %}">
+</head>
+
+<body>
+  <header>
+    <h1>{{page_title}}</h1>
+  </header>
+  <main>
+    <div id="chatBot">
+      <h3>{{userQuestion}}</h3>
+      <div id="chatStreamContainer">
+        {% for message in chatStream %}
+
+        <p class="chatStream">
+          {{message}}
+        </p>
+        {% endfor %}
+      </div>
+      <div id="chatBotCode">
+
+        {% for code in codes %}
+        <p class="chatStreamCode">
+          {{code}}
+        </p>
+        {% endfor %}
+      </div>
+    </div>
+    <div id="userInputChat">
+      <form id="formUserSendQuestionToAI" method="POST" action="/">
+        {% csrf_token %}
+        <input id="userInput" type="text" name="question">
+        <input type="submit" value="send" id="sendButton">
+      </form>
+    </div>
+  </main>
+  <footer>
+    <p>© 2024 - Sakura Ollama</p>
+  </footer>
+  <script src="{% static 'sakuraOllama/sakura.js' %}"></script>
+</body>
+
+</html>
