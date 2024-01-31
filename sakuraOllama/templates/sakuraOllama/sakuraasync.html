@@ -10,17 +10,29 @@
 </head>
 
 <body>
-  <header>
-    <h1>{{page_title}}</h1>
-  </header>
   <main>
     <div id="chatBot">
       <h3>{{userQuestion}}</h3>
       <div id="chatStreamContainer">
         {% for message in chatStream %}
-        <p class="chatStream">
-          {{message}}
-        </p>
+        <div class="paraPicAndChat">
+          <figure class="sakuraFigure">
+            <img src="{% static 'sakuraOllama/images/Sakura.png' %}">
+            <span class="sakuraSpanName">Sakura</span>
+          </figure>
+          <p class="chatStream">
+            {{message}}
+          </p>
+        </div>
+        <div class="paraPicAndChatUser">
+          <figure class="sakuraFigure">
+            <img src="{% static 'sakuraOllama/images/user.png' %}">
+            <span class="userSpanName">{{UserName}}</span>
+          </figure>
+          <p class="chatStreamUser">
+            {{userAnswer}}
+          </p>
+        </div>
         {% endfor %}
       </div>
 
@@ -34,7 +46,7 @@
     </div>
   </main>
   <footer>
-    <p>© 2024 - Sakura Ollama</p>
+    <p>/ 2024 - Sakura Ollama</p>
   </footer>
   <script src="{% static 'sakuraOllama/sakura.js' %}"></script>
 </body>

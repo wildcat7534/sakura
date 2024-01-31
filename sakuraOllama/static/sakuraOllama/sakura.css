@@ -1,3 +1,6 @@
+body {
+  background-color: black;
+}
 main {
   display: flex;
   flex-direction: column;
@@ -10,14 +13,44 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  width: 80%;
+  width: 100%;
   height: 50vh;
   overscroll-behavior-y: contain;
   background-color: #e3acac;
   border: pink 3px ridge;
-  height: 75vh;
+  height: 77vh;
 }
-
+.paraPicAndChat {
+  display: flex;
+  background-color: rgb(198 165 198);
+  border: 1px solid rgb(27, 35, 87);
+  margin: 2% 0%;
+}
+.paraPicAndChatUser {
+  display: flex;
+  background-color: rgb(142, 172, 240);
+  border: 1px solid cadetblue;
+  margin: 2% 0%;
+  flex-direction: row-reverse;
+}
+.sakuraFigure {
+  width: 10%;
+  margin-left: 2%;
+  margin-right: 2%;
+}
+.sakuraFigure img {
+  width: 100%;
+  border-radius: 25%;
+}
+.sakuraSpanName {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: mediumorchid;
+  align-self: center;
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+}
 #userQuestion {
   font-size: 1.2rem;
   font-weight: bold;
@@ -32,23 +65,39 @@ main {
   width: 80%;
   overscroll-behavior-y: auto;
   background-color: #d5b5b5;
-  border: #9c7e7e 3px ridge;
-  height: 75vh;
+  border: #9c7e7e 5px ridge;
+  height: 65vh;
   overflow: auto;
+  padding: 10px;
 }
 
 .chatStream {
   border-radius: 10px;
-  margin: 5px;
-  width: 80%;
   text-align: center;
   color: darkmagenta;
   text-wrap: pretty;
-  line-height: 22px;
+  line-height: 20px;
   height: fit-content;
-  width: 90%;
+  width: 100%;
+  margin: auto;
+  margin-top: 5%;
+  font-size: 1.1rem;
+  padding: 0 5px;
 }
+.chatStreamUser {
+  border-radius: 10px;
+  text-align: center;
+  color: rgb(28, 35, 173);
+  text-wrap: pretty;
+  line-height: 20px;
+  height: fit-content;
+  width: 100%;
+  margin: auto;
+  margin-top: 5%;
+  font-size: 1.1rem;
+  padding: 0 5px;
 
+}
 #chatBotCode {
   background-color: teal;
   color: khaki;
@@ -67,6 +116,7 @@ main {
   width: 70vw;
   display: flex;
   justify-content: center;
+  margin: 30px;
 }
 
 #formUserSendQuestionToAI {
@@ -83,4 +133,8 @@ main {
   border: cyan 3px ridge;
   background-color: #bbd2d5;
   font-size: 1rem;
+}
+
+footer {
+  color: aliceblue;
 }

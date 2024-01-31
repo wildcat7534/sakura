@@ -20,7 +20,7 @@ import transformers
 import torch
 
 title = 'Répondu !'
-phrases = []
+
 
 def sakura(request):
   responsePhrases = []
@@ -60,15 +60,15 @@ def sakura(request):
     return render(request, 'sakuraOllama/sakura.html', {'page_title': title, 'userQuestion' : chatUser, 'chatStream': responsePhrases} )
   return render(request, 'sakuraOllama/sakura.html', {'page_title': title, 'userQuestion' : chatUser, 'chatStream': responsePhrases} )
 
+phrases = []
+conversation = [{'role': 'user', 'content': 'start' }, {'role': 'assistant', 'content': 'start'}]
+
 def sakuraAsync(request):
-  chatUser = "Comment on dit bonjour en Japonais ?"
-  generated_text = ""
-
-
+ 
   if request.method == 'POST':
-     
-    conversation = [{'role': 'user', 'content': chatUser }, {'role': 'assistant', 'content': 'start'}]
-   
+
+    global conversation, phrases
+
     async def chat(conversation):
       generated_text_buff = []
 
@@ -78,21 +78,20 @@ def sakuraAsync(request):
 
         generated_text_buff += (part['message']['content'])
         phrase = ''.join(generated_text_buff)
-        print(part['message']['content'], end='', flush=True)
       
       conversation.append({'role': 'assistant', 'content': phrase})
+
       return phrase
     
     chatUser = request.POST.get('question')
     conversation.append({'role': 'user', 'content': chatUser})
-    print("**conversation : ", conversation)
 
     phrase = async_to_sync(chat)(conversation)
 
     phrases.append(phrase)
 
-    return render(request, 'sakuraOllama/sakuraasync.html', {'page_title': title, 'userQuestion' : chatUser, 'chatStream': phrases})
-  return render(request, 'sakuraOllama/sakuraasync.html', {'page_title': title, 'userQuestion' : chatUser, 'chatStream': generated_text})
+    return render(request, 'sakuraOllama/sakuraasync.html', {'page_title': title, 'userAnswer' : conversation[0]['content'], 'chatStream': phrases})
+  return render(request, 'sakuraOllama/sakuraasync.html', {'page_title': title, 'userQuestion' : "Sakura attend", 'chatStream': ""})
 
 def sakuraVllm(request):
   chatUser = "Comment on dit bonjour en Japonais ?"
