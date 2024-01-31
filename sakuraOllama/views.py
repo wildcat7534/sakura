@@ -80,8 +80,8 @@ def sakuraVllm(request):
     ]
     sampling_params = SamplingParams(temperature=0.8, top_p=0.95)
     #llm = LLM(model="sakura")
-    #llm = LLM(model="mistralai/Mistral-7B-v0.1")
-    llm = AutoModelForCausalLM.from_pretrained("")
+    llm = LLM(model="mistralai/Mistral-7B-v0.1", max_model_len=1024, gpu_memory_utilisation=0.9)
+    #llm = AutoModelForCausalLM.from_pretrained("")
 
     outputs = llm.generate(prompts, sampling_params)
 
@@ -106,12 +106,13 @@ def sakuraTransormers(request):
 
 
   model = "mistralai/Mixtral-8x7B-Instruct-v0.1"
+
   tokenizer = AutoTokenizer.from_pretrained(model)
 
   pipeline = transformers.pipeline(
     "text-generation",
     model=model,
-    model_kwargs={"torch_dtype": torch.float16, "load_in_4bit": True},
+    model_kwargs={"torch_dtype": torch.float16, "load_in_4bit": True, "gpu_memory_utilisation": 0.9}
   )
 
   messages = [{"role": "user", "content": "Explain what a Mixture of Experts is in less than 100 words."}]
