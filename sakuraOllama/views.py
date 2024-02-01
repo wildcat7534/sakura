@@ -60,19 +60,18 @@ def sakura(request):
     return render(request, 'sakuraOllama/sakura.html', {'page_title': title, 'userQuestion' : chatUser, 'chatStream': responsePhrases} )
   return render(request, 'sakuraOllama/sakura.html', {'page_title': title, 'userQuestion' : chatUser, 'chatStream': responsePhrases} )
 
-phrases = []
+phrasesSakura = []
+phrasesUser = []
 conversation = [{'role': 'user', 'content': 'start' }, {'role': 'assistant', 'content': 'start'}]
 
 def sakuraAsync(request):
  
   if request.method == 'POST':
 
-    global conversation, phrases
+    global conversation, phrasesSakura, phrasesUser
 
     async def chat(conversation):
       generated_text_buff = []
-
-      #messages = [message['content'] for message in conversation if isinstance(message['content'], str) and message['content']]
 
       async for part in await AsyncClient().chat(model='sakura', messages=conversation, stream=True):
 
@@ -85,12 +84,15 @@ def sakuraAsync(request):
     
     chatUser = request.POST.get('question')
     conversation.append({'role': 'user', 'content': chatUser})
+    phraseUser = ''.join(chatUser)
+    phrasesUser.append(phraseUser)
 
     phrase = async_to_sync(chat)(conversation)
 
-    phrases.append(phrase)
+    phrasesSakura.append(phrase)
 
-    return render(request, 'sakuraOllama/sakuraasync.html', {'page_title': title, 'userAnswer' : conversation[0]['content'], 'chatStream': phrases})
+    #print("taille de conversation : ", len(conversation), "selectionne le dernier element : ", conversation[len(conversation)-2]['content'] , conversation[len(conversation)-1]['content'])
+    return render(request, 'sakuraOllama/sakuraasync.html', {'page_title': title, 'userAnswer' : phrasesUser, 'chatStream': phrasesSakura, 'conversation' : conversation })
   return render(request, 'sakuraOllama/sakuraasync.html', {'page_title': title, 'userQuestion' : "Sakura attend", 'chatStream': ""})
 
 def sakuraVllm(request):

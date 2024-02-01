@@ -14,26 +14,35 @@
     <div id="chatBot">
       <h3>{{userQuestion}}</h3>
       <div id="chatStreamContainer">
-        {% for message in chatStream %}
-        <div class="paraPicAndChat">
-          <figure class="sakuraFigure">
-            <img src="{% static 'sakuraOllama/images/Sakura.png' %}">
-            <span class="sakuraSpanName">Sakura</span>
-          </figure>
-          <p class="chatStream">
-            {{message}}
-          </p>
-        </div>
-        <div class="paraPicAndChatUser">
-          <figure class="sakuraFigure">
-            <img src="{% static 'sakuraOllama/images/user.png' %}">
-            <span class="userSpanName">{{UserName}}</span>
-          </figure>
-          <p class="chatStreamUser">
-            {{userAnswer}}
-          </p>
-        </div>
+
+        {% for conversation_item in conversation %}
+
+            {% if conversation_item.role == "user" %}
+                <div class="paraPicAndChatUser">
+                    <figure class="sakuraFigure">
+                        <img src="{% static 'sakuraOllama/images/user.png' %}">
+                        <span class="userSpanName">{{ UserName }}</span>
+                    </figure>
+                    <p class="chatStreamUser">
+                        {{ conversation_item.content }}
+                    </p>
+                </div>
+            {% endif %}
+            
+            {% if conversation_item.role == "assistant" %}
+                <div class="paraPicAndChat">
+                    <figure class="sakuraFigure">
+                        <img src="{% static 'sakuraOllama/images/Sakura.png' %}">
+                        <span class="sakuraSpanName">Sakura</span>
+                    </figure>
+                    <p class="chatStream">
+                        {{ conversation_item.content }}
+                    </p>
+                </div>
+            {% endif %}
+
         {% endfor %}
+
       </div>
 
     </div>
