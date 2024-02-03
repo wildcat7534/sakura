@@ -11,6 +11,10 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'sakura.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'sakura.settings')4
+
+sys.path.append('/var/www')
+sys.path.append('/var/www/sakura')
+
 
 application = get_wsgi_application()
