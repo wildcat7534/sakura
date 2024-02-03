@@ -1,6 +1,6 @@
 django==5.0.1
 ollama
-mod-wsgi==5.0.0
+mod_wsgi==5.0.0
 asyncio==3.4.3
 asgiref==3.7.2
 wheel
