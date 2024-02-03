@@ -62,10 +62,10 @@ main {
 #chatStreamContainer {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: end;
   justify-content: flex-start;
   width: 80%;
-  overscroll-behavior-y: auto;
+  overflow-y: scroll;
   background-color: #d5b5b5;
   border: #9c7e7e 5px ridge;
   height: 65vh;

@@ -1,6 +1,6 @@
+django==5.0.1
 ollama
 mod-wsgi
-django==5.0.1
 asyncio==3.4.3
 asgiref==3.7.2
 wheel
