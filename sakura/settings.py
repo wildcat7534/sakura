@@ -31,7 +31,7 @@ SECURE_SSL_REDIRECT = True
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["wildcat.hd.free.fr"]
 
 
 # Application definition
