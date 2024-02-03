@@ -27,6 +27,7 @@ INTERNAL_IPS = ["wildcat.hd.free.fr"]
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 SECURE_SSL_REDIRECT = True
+SECURE_HSTS_SECONDS = 60
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
