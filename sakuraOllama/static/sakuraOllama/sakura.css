@@ -25,6 +25,7 @@ main {
   background-color: rgb(198 165 198);
   border: 1px solid rgb(27, 35, 87);
   margin: 2% 0%;
+  width: 100%;
 }
 .paraPicAndChatUser {
   display: flex;
@@ -32,6 +33,7 @@ main {
   border: 1px solid cadetblue;
   margin: 2% 0%;
   flex-direction: row-reverse;
+  width: 90%;
 }
 .sakuraFigure {
   width: 10%;
