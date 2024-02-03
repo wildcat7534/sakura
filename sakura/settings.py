@@ -22,6 +22,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-j2miin%mde4(n*=(bl^tumuow(-00-xju7$4=xm9y$#(+-hu0e'
 
+INTERNAL_IPS = ["wildcat.hd.free.fr"]
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
