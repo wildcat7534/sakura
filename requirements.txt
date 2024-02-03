@@ -1,6 +1,6 @@
 ollama
-requests==2.31.0
+mod-wsgi
 django==5.0.1
-markdown==3.5.2
 asyncio==3.4.3
 asgiref==3.7.2
+wheel

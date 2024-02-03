@@ -107,7 +107,7 @@ def sakuraVllm(request):
     ]
     sampling_params = SamplingParams(temperature=0.8, top_p=0.95)
     #llm = LLM(model="sakura")
-    llm = LLM(model="mistralai/Mistral-7B-v0.1", max_model_len=1024, gpu_memory_utilisation=0.9)
+    llm = LLM(model="mistralai/Mistral-7B-v0.1", max_model_len=1024, gpu_memory_utilisation=0.9, device_map = "auto")
     #llm = AutoModelForCausalLM.from_pretrained("")
 
     outputs = llm.generate(prompts, sampling_params)
