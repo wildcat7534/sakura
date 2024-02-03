@@ -6,63 +6,20 @@ import json
 from django.shortcuts import render
 from django.views import generic
 
-import requests
+""" import requests
 import asyncio
+import markdown
 import ollama
+#for vLLM
+from vllm import LLM, SamplingParams """
 from ollama import AsyncClient
 from asgiref.sync import async_to_sync
-import markdown
-#for vLLM
-from vllm import LLM, SamplingParams
 #for Transformers
-from transformers import AutoTokenizer, AutoModelForCausalLM
+""" from transformers import AutoTokenizer, AutoModelForCausalLM
 import transformers
-import torch
+import torch """
 
 title = 'Répondu !'
-
-
-def sakura(request):
-  responsePhrases = []
-  chatUser = "Comment on dit bonjour en Japonais ?"
-
-  if request.method == 'POST':
-  
-    chatUser = request.POST.get('question')
-
-    chatHistory = [{'role': 'user', 'content': chatUser}]
-
-    print("chatUser: ", chatUser)
-
-    responses = []
-    for chunk in ollama.chat('sakura', messages=chatHistory, stream=True):
-      message = chunk['message']['content']
-      print( message, end='', flush=True)
-      responses.append(message)
-      
-    print("responses brut : ", responses)
-
-    responsePhrases = []
-    phrase = ""
-
-    for response in responses:
-      if response != "\n":
-        phrase += response
-      else:
-        responsePhrases.append(phrase)
-        print("Phrase ajouté à responsePhrases : ", phrase)
-        phrase = ""
-      
-    print("chunk de phrase : ",phrase)
-    print("responsePhrases : ",responsePhrases)
-
-    
-    return render(request, 'sakuraOllama/sakura.html', {'page_title': title, 'userQuestion' : chatUser, 'chatStream': responsePhrases} )
-  return render(request, 'sakuraOllama/sakura.html', {'page_title': title, 'userQuestion' : chatUser, 'chatStream': responsePhrases} )
-
-phrasesSakura = []
-phrasesUser = []
-conversation = [{'role': 'user', 'content': 'start' }, {'role': 'assistant', 'content': 'start'}]
 
 def sakuraAsync(request):
  
@@ -95,7 +52,12 @@ def sakuraAsync(request):
     return render(request, 'sakuraOllama/sakuraasync.html', {'page_title': title, 'userAnswer' : phrasesUser, 'chatStream': phrasesSakura, 'conversation' : conversation })
   return render(request, 'sakuraOllama/sakuraasync.html', {'page_title': title, 'userQuestion' : "Sakura attend", 'chatStream': ""})
 
-def sakuraVllm(request):
+
+
+
+
+
+""" def sakuraVllm(request):
   chatUser = "Comment on dit bonjour en Japonais ?"
   generated_text = ""
   if request.method == 'POST':
@@ -147,6 +109,6 @@ def sakuraTransormers(request):
 
   from transformers import TextStreamer
   streamer = TextStreamer(tokenizer, skip_prompt=True)
-  outputs = pipeline(prompt, streamer=streamer, max_new_tokens=256, do_sample=True, temperature=0.7, top_k=50, top_p=0.95)
+  outputs = pipeline(prompt, streamer=streamer, max_new_tokens=256, do_sample=True, temperature=0.7, top_k=50, top_p=0.95) """
 
 

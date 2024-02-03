@@ -19,7 +19,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('', include('sakuraOllama.urls')),
-    path('sakuravllm/', include('sakuraOllama.urls')),
+"""     path('sakuravllm/', include('sakuraOllama.urls')),
     path('sakuraTransormers/', include('sakuraOllama.urls')),
-    path('sakuraasync/', include('sakuraOllama.urls')),
+    path('sakuraasync/', include('sakuraOllama.urls')), """
 ]
