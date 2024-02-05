@@ -5,3 +5,4 @@ mod_wsgi-standalone
 mod_wsgi==5.0.0
 asyncio==3.4.3
 asgiref==3.7.2
+vllm
