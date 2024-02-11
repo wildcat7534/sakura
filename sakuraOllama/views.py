@@ -1,9 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect, HttpRequest
-from django.shortcuts import render, get_object_or_404
 from django.template import loader
 import json
 
-from django.shortcuts import render
 from django.views import generic
 
 """ import requests
@@ -12,45 +10,63 @@ import markdown
 import ollama
 #for vLLM
 from vllm import LLM, SamplingParams """
-from ollama import AsyncClient
+
 from asgiref.sync import async_to_sync
+from httpx import Client
+from ollama._client import BaseClient
 #for Transformers
 """ from transformers import AutoTokenizer, AutoModelForCausalLM
 import transformers
 import torch """
 
+from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
+from ollama import AsyncClient
+import asyncio
+
 title = 'Répondu !'
+conversation = []
+phrasesSakura = []
+phrasesUser = []
+chatUser = ""
 
 def sakuraAsync(request):
+  global conversation, phrasesSakura, phrasesUser, chatUser
  
+  async def main():
+    phraseUser = ''.join(chatUser)
+    phrasesUser.append(phraseUser)
+    print("phraseUser : ", phraseUser)
+    phrasesSakura.append(await chat(conversation))
+    print("phrasesSakura : ", phrasesSakura)
+  
   if request.method == 'POST':
+    if request.POST.get('question') != '':
+      chatUser = request.POST.get('question')
+    else:
+      chatUser = "je ne sais pas quoi dire..."
 
-    global conversation, phrasesSakura, phrasesUser
-
+    # // AsyncClient().
     async def chat(conversation):
+      client = AsyncClient(host='http://192.168.0.100:11434')
       generated_text_buff = []
-
-      async for part in await AsyncClient().chat(model='sakura', messages=conversation, stream=True):
+      async for part in await client.chat(model='sakura', messages=conversation, stream=True):
 
         generated_text_buff += (part['message']['content'])
         phrase = ''.join(generated_text_buff)
       
       conversation.append({'role': 'assistant', 'content': phrase})
-
       return phrase
     
     chatUser = request.POST.get('question')
     conversation.append({'role': 'user', 'content': chatUser})
-    phraseUser = ''.join(chatUser)
-    phrasesUser.append(phraseUser)
-
-    phrase = async_to_sync(chat)(conversation)
-
-    phrasesSakura.append(phrase)
-
-    #print("taille de conversation : ", len(conversation), "selectionne le dernier element : ", conversation[len(conversation)-2]['content'] , conversation[len(conversation)-1]['content'])
+    asyncio.run(main())
     return render(request, 'sakuraOllama/sakuraasync.html', {'page_title': title, 'userAnswer' : phrasesUser, 'chatStream': phrasesSakura, 'conversation' : conversation })
+    
+
   return render(request, 'sakuraOllama/sakuraasync.html', {'page_title': title, 'userQuestion' : "Sakura attend", 'chatStream': ""})
+    #phrasesSakura.append( async_to_sync(chat)(conversation) )
+    #print("taille de conversation : ", len(conversation), "selectionne le dernier element : ", conversation[len(conversation)-2]['content'] , conversation[len(conversation)-1]['content'])
 
 
 

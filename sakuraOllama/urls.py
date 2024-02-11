@@ -5,4 +5,5 @@ app_name = 'sakuraOllama'
 
 urlpatterns = [
   path('', views.sakuraAsync, name='sakuraasync'),
+  path('sakuraasync', views.sakuraAsync, name='sakuraasync'),
 ]
